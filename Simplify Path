@@ -1,0 +1,25 @@
+    string simplifyPath(string path) {
+        deque<string> seg;
+        string ret;
+        int i = 0;
+        // read input seperated by /, pop last one when meet ".."
+        while(i < path.size()){
+            while(i < path.size() && path[i] == '/') ++i;
+            if(i == path.size()) break;
+            string tmp;
+            while(i < path.size() && path[i] != '/') tmp.push_back(path[i++]);
+            if(tmp.compare("..") == 0){
+                if(!seg.empty()) seg.pop_back();
+            }else if(tmp.compare(".") != 0){
+                seg.push_back(tmp);
+            }
+        }
+        // Assemble the path
+        while(!seg.empty()){
+            ret.push_back('/');
+            ret.append(seg.front());
+            seg.pop_front();
+        }
+        if(ret.empty()) ret.push_back('/');
+        return ret;
+    }
