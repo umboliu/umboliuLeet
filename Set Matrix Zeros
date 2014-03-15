@@ -1,0 +1,30 @@
+  // Use integer array to record the column index of the 0
+
+    void setTopLeft(vector<vector<int> > &matrix, int i, int j){
+        for(int k = 0; k < i; k++) matrix[k][j] = 0;
+        for(int l = 0; l < j; l++) matrix[i][l] = 0;
+    }
+    
+    void setZeroes(vector<vector<int> > &matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        int byteNum = (n - 1) / 64 + 1;
+        vector<long long int> byte(byteNum, 0);
+        for(int i = 0; i < m; i++){
+            bool curRow = 0;
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == 0){
+                    setTopLeft(matrix,i,j);
+                    curRow = 1;
+                    long long int shift = 1;
+                    shift = shift << (63 - (j % 64));
+                    byte[j / 64] = byte[j / 64] | shift;
+                }else if(curRow) matrix[i][j] = 0;
+                else{
+                    long long int shift = 1;
+                    shift = shift << (63 - (j % 64));
+                    shift = byte[j / 64] & shift;
+                    if(shift != 0) matrix[i][j] = 0;
+                }
+            }
+        }
+    }
