@@ -1,0 +1,26 @@
+
+    // Never forget to set the tail -> next == NULL!!
+    // wrap up when u finish!!
+
+    ListNode *deleteDuplicates(ListNode *head) {
+        if(head == NULL || head -> next == NULL) return head;
+        int curVal = head -> val;
+        ListNode *newhead = NULL, *tail = NULL, *mv = head;
+        while(mv){
+            if(mv -> next != NULL && mv -> next -> val == curVal){
+                while(mv && mv -> val == curVal) mv = mv -> next;
+                if(mv == NULL) break;
+                else curVal = mv -> val;
+            }else{
+                if(newhead == NULL) newhead = tail = mv;
+                else{
+                    tail -> next = mv;
+                    tail = mv;
+                }
+                mv = mv -> next;
+                if(mv) curVal = mv -> val;
+            }
+        }
+        if(tail) tail -> next = NULL;
+        return newhead;
+    }
